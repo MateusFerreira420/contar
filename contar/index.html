@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contar</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#007bff">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 20px;
+      background: #f4f4f9;
+    }
+    h1 {
+      margin-bottom: 20px;
+    }
+    .contador {
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    input {
+      padding: 10px;
+      font-size: 18px;
+      width: 150px;
+      text-align: center;
+    }
+    button {
+      margin-top: 10px;
+      margin-right: 5px;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      background: #007bff;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    .resultado {
+      margin-top: 10px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .totalGeral {
+      background: #007bff;
+      color: #fff;
+      padding: 15px;
+      border-radius: 12px;
+      font-size: 22px;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Contar</h1>
+
+  <div class="contador">
+    <h2>Adultos</h2>
+    <input type="number" id="adultoInput" placeholder="Ex: 2 ou -1">
+    <button onclick="somar('adulto')">Adicionar</button>
+    <button onclick="resetar('adulto')">Resetar</button>
+    <div class="resultado" id="adultoResultado">Total: 0</div>
+  </div>
+
+  <div class="contador">
+    <h2>Crianças</h2>
+    <input type="number" id="criancaInput" placeholder="Ex: 3 ou -1">
+    <button onclick="somar('crianca')">Adicionar</button>
+    <button onclick="resetar('crianca')">Resetar</button>
+    <div class="resultado" id="criancaResultado">Total: 0</div>
+  </div>
+
+  <div class="totalGeral" id="totalGeral">Total Geral: 0</div>
+  <button onclick="resetarTudo()">Resetar Tudo</button>
+
+  <script>
+    let totalAdultos = 0;
+    let totalCriancas = 0;
+
+    function atualizarTotal() {
+      let total = totalAdultos + totalCriancas;
+      document.getElementById("totalGeral").innerText = "Total Geral: " + total;
+    }
+
+    function somar(tipo) {
+      let valor = parseInt(document.getElementById(tipo + "Input").value);
+      if (isNaN(valor)) return;
+
+      if (tipo === "adulto") {
+        totalAdultos += valor;
+        document.getElementById("adultoResultado").innerText = "Total: " + totalAdultos;
+      } else {
+        totalCriancas += valor;
+        document.getElementById("criancaResultado").innerText = "Total: " + totalCriancas;
+      }
+      document.getElementById(tipo + "Input").value = "";
+      atualizarTotal();
+    }
+
+    function resetar(tipo) {
+      if (tipo === "adulto") {
+        totalAdultos = 0;
+        document.getElementById("adultoResultado").innerText = "Total: 0";
+      } else {
+        totalCriancas = 0;
+        document.getElementById("criancaResultado").innerText = "Total: 0";
+      }
+      atualizarTotal();
+    }
+
+    function resetarTudo() {
+      totalAdultos = 0;
+      totalCriancas = 0;
+      document.getElementById("adultoResultado").innerText = "Total: 0";
+      document.getElementById("criancaResultado").innerText = "Total: 0";
+      atualizarTotal();
+    }
+
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("service-worker.js");
+    }
+  </script>
+</body>
+</html>
